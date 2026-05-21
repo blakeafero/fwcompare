@@ -552,6 +552,28 @@ function parseBuild(raw) {
   return null;
 }
 
+function getEnvMore(build) {
+  for (const action of (build.actions || [])) {
+    if (action && action.environment && action.environment.MORE) {
+      return action.environment.MORE;
+    }
+  }
+  return null;
+}
+
+function parseMoreField(more) {
+  if (!more) return [];
+  const lines = more.split(/\n|\u000a/);
+  const items = [];
+  for (const line of lines) {
+    const m = line.match(/^\s*-\s+([a-f0-9]+)\s+(.+?):\s*(.+)$/);
+    if (m) {
+      items.push({ commitId: m[1], author: { fullName: m[2] }, msg: m[3].trim() });
+    }
+  }
+  return items;
+}
+
 function getArtifactSlugs(build) {
   if (!build.artifacts) return new Set();
   return new Set(build.artifacts.map(a => {
@@ -561,6 +583,11 @@ function getArtifactSlugs(build) {
 }
 
 function getCommits(build) {
+  const more = getEnvMore(build);
+  if (more) {
+    const parsed = parseMoreField(more);
+    if (parsed.length > 0) return parsed;
+  }
   const items = [];
   const sets = build.changeSets || (build.changeSet ? [build.changeSet] : []);
   sets.forEach(cs => (cs.items || []).forEach(i => items.push(i)));
@@ -568,9 +595,12 @@ function getCommits(build) {
 }
 
 function extractBranch(build) {
-  const name = build.fullDisplayName || '';
-  const m = name.match(/fw-mono[^»]*»\s*([\d.]+)/);
-  return m ? m[1] : (name.includes('2.7') ? '2.7' : name.includes('2.6') ? '2.6' : '?');
+  const name = (build.fullDisplayName || '') + ' ' + (build.fullName || '');
+  const m = name.match(/([\d]+\.[\d]+)/);
+  if (m) return m[1];
+  const env = getEnvMore(build) || '';
+  const em = env.match(/fw-mono\/([\d.]+)/);
+  return em ? em[1] : '?';
 }
 
 function formatDate(ts) {
