@@ -775,14 +775,13 @@ function loadDemo() {
 }
 
 // Auto-trigger picker when user pastes
-document.getElementById('base-json').addEventListener('input', () => {
-  if (document.getElementById('base-json').value.trim().length > 100) loadSide('single');
-});
-document.getElementById('cross-base-json') && document.getElementById('cross-base-json').addEventListener('input', () => {
-  if (document.getElementById('cross-base-json').value.trim().length > 100) loadSide('cross-base');
-});
-document.getElementById('cross-new-json') && document.getElementById('cross-new-json').addEventListener('input', () => {
-  if (document.getElementById('cross-new-json').value.trim().length > 100) loadSide('cross-new');
+document.addEventListener('DOMContentLoaded', () => {
+  const bj = document.getElementById('base-json');
+  if (bj) bj.addEventListener('input', () => { if (bj.value.trim().length > 100) loadSide('single'); });
+  const cbj = document.getElementById('cross-base-json');
+  if (cbj) cbj.addEventListener('input', () => { if (cbj.value.trim().length > 100) loadSide('cross-base'); });
+  const cnj = document.getElementById('cross-new-json');
+  if (cnj) cnj.addEventListener('input', () => { if (cnj.value.trim().length > 100) loadSide('cross-new'); });
 });
 
 </script>
@@ -904,7 +903,7 @@ document.getElementById('cross-new-json') && document.getElementById('cross-new-
 </main>
 
 <footer style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px;">
-  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v1.4</span>
+  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v1.5</span>
 </footer>
 
 
