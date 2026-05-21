@@ -462,6 +462,20 @@
     .paste-grid, .build-cards { grid-template-columns: 1fr; }
   }
 </style>
+<script>
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('fw-theme', t); } catch(e) {}
+  document.querySelectorAll('[id^="btn-"]').forEach(b => b.style.opacity = '0.4');
+  const active = document.getElementById('btn-' + t);
+  if (active) active.style.opacity = '1';
+}
+(function() {
+  let saved = 'dark';
+  try { saved = localStorage.getItem('fw-theme') || 'dark'; } catch(e) {}
+  document.documentElement.setAttribute('data-theme', saved);
+})();
+</script>
 </head>
 <body>
 
@@ -578,6 +592,10 @@
     </div>
   </div>
 </main>
+
+<footer style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px;">
+  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v1.4</span>
+</footer>
 
 <script>
 // State
@@ -856,10 +874,7 @@ function loadDemo() {
   const makeBuild = (num, branch, ts, msgLines, artifacts) => ({
     number: num, result: 'SUCCESS', timestamp: ts, fullName: `fw-mono/${branch}`,
     artifacts: artifacts.map(a => ({fileName:`${a}-build${num}.zip`})),
-    actions:[{environment:{MORE:`fw-mono/${branch} - #${num}
-Changes since last Success:
-${msgLines.map(m=>' - '+m.id+' '+m.author+': '+m.msg).join('
-')}`}}]
+    actions:[{environment:{MORE:`fw-mono/${branch} - #${num}\nChanges since last Success:\n${msgLines.map(m=>' - '+m.id+' '+m.author+': '+m.msg).join('\n')}`}}]
   });
 
   const job27 = makeJob('2.7', [
@@ -879,19 +894,6 @@ ${msgLines.map(m=>' - '+m.id+' '+m.author+': '+m.msg).join('
   loadSide('single');
 }
 
-function setTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  try { localStorage.setItem('fw-theme', t); } catch(e) {}
-  document.querySelectorAll('[id^="btn-"]').forEach(b => b.style.opacity = '0.4');
-  const active = document.getElementById('btn-' + t);
-  if (active) active.style.opacity = '1';
-}
-(function() {
-  let saved = 'dark';
-  try { saved = localStorage.getItem('fw-theme') || 'dark'; } catch(e) {}
-  setTheme(saved);
-})();
-
 // Auto-trigger picker when user pastes
 document.getElementById('base-json').addEventListener('input', () => {
   if (document.getElementById('base-json').value.trim().length > 100) loadSide('single');
@@ -902,5 +904,6 @@ document.getElementById('cross-base-json') && document.getElementById('cross-bas
 document.getElementById('cross-new-json') && document.getElementById('cross-new-json').addEventListener('input', () => {
   if (document.getElementById('cross-new-json').value.trim().length > 100) loadSide('cross-new');
 });
+</script>
 </body>
 </html>
