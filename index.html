@@ -503,10 +503,15 @@ function showErr(msg) {
 // Parse raw JSON into a list of builds (handles full job JSON or single build)
 function parseBuilds(raw) {
   let data;
-  try { data = JSON.parse(raw.trim()); } catch(e) { return null; }
+  try { data = JSON.parse(raw.trim()); } catch(e) {
+    showErr('JSON parse error: ' + e.message);
+    return null;
+  }
+  const keys = Object.keys(data).join(', ');
   if (data.jobs) return data.jobs.flatMap(j => j.builds || []);
   if (Array.isArray(data.builds)) return data.builds;
   if (data.number !== undefined) return [data];
+  showErr('Unrecognized structure. Top-level keys: ' + keys);
   return null;
 }
 
@@ -902,7 +907,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </main>
 
 <footer style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px;">
-  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v1.6</span>
+  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v1.7</span>
 </footer>
 
 
