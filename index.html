@@ -494,6 +494,10 @@ function toggleCross() {
   updateCompareBtn();
 }
 
+function linkifyMsg(msg) {
+  return esc(msg).replace(/DEV-(\d+)/g, '<a href="https://kibanlabs.atlassian.net/browse/DEV-$1" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">DEV-$1</a>');
+}
+
 function toggleCommits(id) {
   const el = document.getElementById(id);
   if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
@@ -705,7 +709,7 @@ function runDiff() {
       <div class="build-meta">${formatDate(base.timestamp)}<br>
         <span onclick="toggleCommits('base-commits-detail')" style="cursor:pointer;text-decoration:underline;text-underline-offset:2px;">${baseCommits.length} commit(s)</span>
         <div id="base-commits-detail" style="display:none;margin-top:8px;font-size:11px;line-height:1.8;">
-          ${baseCommits.map(c => `<div style="color:var(--text-muted);">${esc(c.msg||'')}</div>`).join('')}
+          ${baseCommits.map(c => `<div style="color:var(--text-muted);">${linkifyMsg(c.msg||'')}</div>`).join('')}
         </div>
       </div>
     </div>
@@ -719,7 +723,7 @@ function runDiff() {
       <div class="build-meta">${formatDate(newer.timestamp)}<br>
         <span onclick="toggleCommits('new-commits-detail')" style="cursor:pointer;text-decoration:underline;text-underline-offset:2px;">${newCommits.length} commit(s) · <strong>${trulyNew.length} new</strong></span>
         <div id="new-commits-detail" style="display:none;margin-top:8px;font-size:11px;line-height:1.8;">
-          ${newCommits.map(c => `<div style="color:${trulyNew.includes(c)?'var(--green)':'var(--text-muted)'};">${esc(c.msg||'')}</div>`).join('')}
+          ${newCommits.map(c => `<div style="color:${trulyNew.includes(c)?'var(--green)':'var(--text-muted)'};">${linkifyMsg(c.msg||'')}</div>`).join('')}
         </div>
       </div>
     </div>`;
@@ -927,7 +931,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </main>
 
 <footer style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px;">
-  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v1.9</span>
+  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v2.0</span>
 </footer>
 
 
