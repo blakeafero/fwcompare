@@ -9,33 +9,55 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #22263a;
-    --border: #2e3248;
-    --border-accent: #3d4266;
-    --text: #e8eaf6;
-    --text-muted: #7b82a8;
-    --text-dim: #4a5070;
-    --green: #4ade80;
-    --green-bg: #0d2818;
-    --green-border: #166534;
-    --red: #f87171;
-    --red-bg: #2a0f0f;
-    --red-border: #7f1d1d;
-    --amber: #fbbf24;
-    --amber-bg: #27200a;
-    --blue: #60a5fa;
-    --blue-bg: #0c1a30;
-    --blue-border: #1e3a5f;
-    --accent: #818cf8;
-    --accent-dim: #312e81;
-    --mono: 'IBM Plex Mono', monospace;
-    --sans: 'IBM Plex Sans', sans-serif;
-    --radius: 6px;
-    --radius-lg: 10px;
+  /* ── Dark (default) ── */
+  :root, [data-theme="dark"] {
+    --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
+    --border: #2e3248; --border-accent: #3d4266;
+    --text: #e8eaf6; --text-muted: #7b82a8; --text-dim: #4a5070;
+    --green: #4ade80; --green-bg: #0d2818; --green-border: #166534;
+    --red: #f87171; --red-bg: #2a0f0f; --red-border: #7f1d1d;
+    --amber: #fbbf24; --amber-bg: #27200a;
+    --blue: #60a5fa; --blue-bg: #0c1a30; --blue-border: #1e3a5f;
+    --accent: #818cf8; --accent-dim: #312e81;
+    --new-card-bg: #13143a;
   }
+  /* ── Light ── */
+  [data-theme="light"] {
+    --bg: #f5f6fa; --surface: #ffffff; --surface2: #f0f1f7;
+    --border: #d8dae8; --border-accent: #b8bbcf;
+    --text: #1a1d2e; --text-muted: #555972; --text-dim: #9598b0;
+    --green: #166534; --green-bg: #dcfce7; --green-border: #86efac;
+    --red: #991b1b; --red-bg: #fee2e2; --red-border: #fca5a5;
+    --amber: #92400e; --amber-bg: #fef3c7;
+    --blue: #1d4ed8; --blue-bg: #dbeafe; --blue-border: #93c5fd;
+    --accent: #4f46e5; --accent-dim: #e0e7ff;
+    --new-card-bg: #eef2ff;
+  }
+  /* ── High contrast ── */
+  [data-theme="hc"] {
+    --bg: #000000; --surface: #111111; --surface2: #1a1a1a;
+    --border: #444444; --border-accent: #666666;
+    --text: #ffffff; --text-muted: #cccccc; --text-dim: #888888;
+    --green: #00ff88; --green-bg: #002200; --green-border: #00aa55;
+    --red: #ff4444; --red-bg: #220000; --red-border: #aa0000;
+    --amber: #ffcc00; --amber-bg: #221a00;
+    --blue: #44aaff; --blue-bg: #001833; --blue-border: #0066cc;
+    --accent: #ffff00; --accent-dim: #333300;
+    --new-card-bg: #001a00;
+  }
+  /* ── Solarized ── */
+  [data-theme="solarized"] {
+    --bg: #002b36; --surface: #073642; --surface2: #0d4454;
+    --border: #194d5e; --border-accent: #2a6070;
+    --text: #eee8d5; --text-muted: #93a1a1; --text-dim: #586e75;
+    --green: #859900; --green-bg: #0a1a00; --green-border: #4a6600;
+    --red: #dc322f; --red-bg: #2a0a0a; --red-border: #8a1a1a;
+    --amber: #b58900; --amber-bg: #1a1400;
+    --blue: #268bd2; --blue-bg: #001a2e; --blue-border: #0f4a72;
+    --accent: #2aa198; --accent-dim: #002e2c;
+    --new-card-bg: #001a18;
+  }
+  :root { --mono: 'IBM Plex Mono', monospace; --sans: 'IBM Plex Sans', sans-serif; --radius: 6px; --radius-lg: 10px; }
 
   body {
     background: var(--bg);
@@ -198,7 +220,7 @@
 
   .build-card.is-new {
     border-color: var(--accent);
-    background: #13143a;
+    background: var(--new-card-bg);
   }
 
   .build-num {
@@ -339,7 +361,10 @@
     margin-right: 4px;
     margin-bottom: 4px;
     vertical-align: middle;
+    text-decoration: none;
+    cursor: pointer;
   }
+  .dev-ticket:hover { text-decoration: underline; }
 
   .commit-tickets { margin-bottom: 4px; }
 
@@ -443,7 +468,14 @@
 <header>
   <span class="logo">fw<span>-</span>mono</span>
   <span class="header-tag">build diff</span>
-  <span style="color: var(--text-dim); font-size: 12px; margin-left: auto; font-family: var(--mono);">Afero QA</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+    <span style="color:var(--text-dim);font-size:11px;font-family:var(--mono);">theme</span>
+    <button onclick="setTheme('dark')" id="btn-dark" title="Dark" style="width:22px;height:22px;border-radius:50%;background:#0f1117;border:2px solid #818cf8;cursor:pointer;padding:0;" aria-label="Dark theme"></button>
+    <button onclick="setTheme('light')" id="btn-light" title="Light" style="width:22px;height:22px;border-radius:50%;background:#f5f6fa;border:2px solid #d8dae8;cursor:pointer;padding:0;" aria-label="Light theme"></button>
+    <button onclick="setTheme('hc')" id="btn-hc" title="High contrast" style="width:22px;height:22px;border-radius:50%;background:#000;border:2px solid #ffff00;cursor:pointer;padding:0;" aria-label="High contrast theme"></button>
+    <button onclick="setTheme('solarized')" id="btn-solarized" title="Solarized" style="width:22px;height:22px;border-radius:50%;background:#002b36;border:2px solid #2aa198;cursor:pointer;padding:0;" aria-label="Solarized theme"></button>
+    <span style="color:var(--text-dim);font-size:12px;margin-left:8px;font-family:var(--mono);">Afero QA</span>
+  </div>
 </header>
 
 <main>
@@ -456,30 +488,53 @@
       <li>Connect to Jenkins via SDM as usual</li>
       <li>For branch 2.6: <a href="https://jenkins-tools.afero-inc.sdm.network/job/fw-mono/job/2.6/api/json?depth=2&pretty=true" target="_blank" style="color:var(--accent);font-family:var(--mono);font-size:11px;">jenkins-tools.afero-inc.sdm.network/job/fw-mono/job/2.6/api/json?depth=2&pretty=true</a></li>
       <li>For branch 2.7: <a href="https://jenkins-tools.afero-inc.sdm.network/job/fw-mono/job/2.7/api/json?depth=2&pretty=true" target="_blank" style="color:var(--accent);font-family:var(--mono);font-size:11px;">jenkins-tools.afero-inc.sdm.network/job/fw-mono/job/2.7/api/json?depth=2&pretty=true</a></li>
-      <li>Select all (Cmd+A), copy, paste into the boxes below</li>
-      <li>You can paste the full job JSON — the tool picks the latest successful build automatically</li>
+      <li>Paste JSON below, pick base + new from the list, hit compare</li>
     </ol>
   </div>
 
-  <div class="paste-grid">
-    <div class="paste-block">
+  <div id="single-mode">
+    <div class="paste-block" style="margin-bottom:12px;">
       <label>
-        Base build <em style="color:var(--text-muted);font-style:normal;">(what QA had before)</em>
-        <span class="branch-hint">Paste full job JSON or a single build object · branch 2.6 or 2.7</span>
+        Branch JSON
+        <span class="branch-hint">Paste 2.6 or 2.7 JSON &mdash; then click a base build and a new build from the list</span>
       </label>
-      <textarea id="base-json" placeholder="Paste base build JSON here…"></textarea>
+      <textarea id="base-json" placeholder="Paste Jenkins branch JSON here&hellip;"></textarea>
     </div>
-    <div class="paste-block">
-      <label>
-        New build <em style="color:var(--text-muted);font-style:normal;">(latest from Jenkins)</em>
-        <span class="branch-hint">Tool auto-picks latest SUCCESS build from full job JSON</span>
-      </label>
-      <textarea id="new-json" placeholder="Paste new build JSON here…"></textarea>
+    <div id="picker-single-wrap" style="display:none;margin-bottom:16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <p style="font-size:11px;font-family:var(--mono);color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Base build</p>
+          <div id="picker-base"></div>
+        </div>
+        <div>
+          <p style="font-size:11px;font-family:var(--mono);color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">New build</p>
+          <div id="picker-new"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:16px;">
+    <button onclick="toggleCross()" id="cross-toggle" style="font-size:12px;padding:5px 14px;color:var(--text-muted);border-color:var(--border);">+ Compare across branches (2.6 vs 2.7)</button>
+  </div>
+
+  <div id="cross-mode" style="display:none;margin-bottom:16px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="paste-block">
+        <label>Branch 2.6 JSON <span class="branch-hint">Pick the base build</span></label>
+        <textarea id="cross-base-json" placeholder="Paste 2.6 JSON here&hellip;"></textarea>
+        <div id="picker-cross-base" style="margin-top:8px;"></div>
+      </div>
+      <div class="paste-block">
+        <label>Branch 2.7 JSON <span class="branch-hint">Pick the new build</span></label>
+        <textarea id="cross-new-json" placeholder="Paste 2.7 JSON here&hellip;"></textarea>
+        <div id="picker-cross-new" style="margin-top:8px;"></div>
+      </div>
     </div>
   </div>
 
   <div class="actions">
-    <button class="btn-run" onclick="runDiff()">Compare builds</button>
+    <button class="btn-run" id="compare-btn" onclick="runDiff()">Compare builds</button>
     <button onclick="loadDemo()">Load example</button>
     <button onclick="clearAll()">Clear</button>
     <span class="error" id="error-box"></span>
@@ -525,12 +580,21 @@
 </main>
 
 <script>
-const KNOWN_ARTIFACTS = [
-  'apps-esp32','apps-realtek-8762','apps-realtek-ameba_z2',
-  'bootloader-esp32','factoryapp-esp32','factoryapp-realtek-8762',
-  'factoryapp-realtek-ameba-z2','bootloader-realtek-ameba_z2',
-  'fw-tools-details','scripts'
-];
+// State
+let baseBuilds = [], newBuilds = [], crossBaseBuilds = [], crossNewBuilds = [];
+let selectedBase = null, selectedNew = null;
+let crossMode = false;
+
+function toggleCross() {
+  crossMode = !crossMode;
+  document.getElementById('cross-mode').style.display = crossMode ? 'block' : 'none';
+  document.getElementById('single-mode').style.display = crossMode ? 'none' : 'block';
+  document.getElementById('cross-toggle').textContent = crossMode
+    ? '- Back to single branch mode'
+    : '+ Compare across branches (2.6 vs 2.7)';
+  selectedBase = null; selectedNew = null;
+  updateCompareBtn();
+}
 
 function showErr(msg) {
   const b = document.getElementById('error-box');
@@ -538,48 +602,43 @@ function showErr(msg) {
   b.style.display = msg ? 'inline-block' : 'none';
 }
 
-function parseBuild(raw) {
+// Parse raw JSON into a list of builds (handles full job JSON or single build)
+function parseBuilds(raw) {
   let data;
   try { data = JSON.parse(raw.trim()); } catch(e) { return null; }
-  if (data.jobs) {
-    const builds = data.jobs.flatMap(j => j.builds || []);
-    return builds.filter(b => b.result === 'SUCCESS').sort((a,b) => b.number - a.number)[0] || null;
-  }
-  if (Array.isArray(data.builds)) {
-    return data.builds.filter(b => b.result === 'SUCCESS').sort((a,b) => b.number - a.number)[0] || null;
-  }
-  if (data.number !== undefined) return data;
+  if (data.jobs) return data.jobs.flatMap(j => j.builds || []);
+  if (Array.isArray(data.builds)) return data.builds;
+  if (data.number !== undefined) return [data];
   return null;
 }
 
 function getEnvMore(build) {
   for (const action of (build.actions || [])) {
-    if (action && action.environment && action.environment.MORE) {
-      return action.environment.MORE;
-    }
+    if (action && action.environment && action.environment.MORE) return action.environment.MORE;
   }
   return null;
 }
 
 function parseMoreField(more) {
   if (!more) return [];
-  const lines = more.split(/\n|\u000a/);
-  const items = [];
-  for (const line of lines) {
+  return more.split(/\n|\u000a/).reduce((acc, line) => {
     const m = line.match(/^\s*-\s+([a-f0-9]+)\s+(.+?):\s*(.+)$/);
-    if (m) {
-      items.push({ commitId: m[1], author: { fullName: m[2] }, msg: m[3].trim() });
-    }
-  }
-  return items;
+    if (m) acc.push({ commitId: m[1], author: { fullName: m[2] }, msg: m[3].trim() });
+    return acc;
+  }, []);
+}
+
+// Strip build numbers from artifact filenames: apps-atmosic-atm33-build27370.zip → apps-atmosic-atm33
+function slugify(filename) {
+  return filename
+    .replace(/\.zip$|\.bin$|\.tar\.gz$/i, '')
+    .replace(/-build\d+$/i, '')
+    .replace(/_build\d+$/i, '');
 }
 
 function getArtifactSlugs(build) {
   if (!build.artifacts) return new Set();
-  return new Set(build.artifacts.map(a => {
-    const name = a.fileName || a.displayPath || '';
-    return KNOWN_ARTIFACTS.find(slug => name.includes(slug)) || name;
-  }).filter(Boolean));
+  return new Set(build.artifacts.map(a => slugify(a.fileName || a.displayPath || '')).filter(Boolean));
 }
 
 function getCommits(build) {
@@ -596,7 +655,7 @@ function getCommits(build) {
 
 function extractBranch(build) {
   const name = (build.fullDisplayName || '') + ' ' + (build.fullName || '');
-  const m = name.match(/([\d]+\.[\d]+)/);
+  const m = name.match(/(\d+\.\d+)/);
   if (m) return m[1];
   const env = getEnvMore(build) || '';
   const em = env.match(/fw-mono\/([\d.]+)/);
@@ -621,7 +680,7 @@ function commitHTML(item, isNew) {
   const author = (item.author && item.author.fullName) || item.authorEmail || '';
   const hash = (item.commitId || item.id || '').slice(0, 8);
   const tickets = devTickets(msg);
-  const ticketsHTML = tickets.map(t => `<span class="dev-ticket">${t}</span>`).join('');
+  const ticketsHTML = tickets.map(t => `<a class="dev-ticket" href="https://kibanlabs.atlassian.net/browse/${t}" target="_blank">${t}</a>`).join('');
   return `<div class="commit${isNew ? ' is-new' : ''}">
     ${ticketsHTML ? `<div class="commit-tickets">${ticketsHTML}</div>` : ''}
     <div class="commit-msg">${esc(msg)}</div>
@@ -632,16 +691,88 @@ function commitHTML(item, isNew) {
   </div>`;
 }
 
+// Render a build picker list for one side
+// Render a picker list into a named container element
+function renderPickerInto(builds, containerId, selectedBuild, onSelect) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  container.style.cssText = 'border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;max-height:220px;overflow-y:auto;';
+  builds.slice(0, 20).forEach(b => {
+    const branch = extractBranch(b);
+    const commits = getCommits(b);
+    const firstMsg = commits.length ? commits[0].msg.slice(0, 50) + (commits[0].msg.length > 50 ? '…' : '') : '—';
+    const isSelected = selectedBuild === b;
+    const isSuccess = b.result === 'SUCCESS';
+    const row = document.createElement('div');
+    row.style.cssText = `padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:${isSelected ? 'var(--new-card-bg)' : 'transparent'};transition:background 0.1s;`;
+    row.innerHTML = `
+      <span style="font-family:var(--mono);font-size:12px;font-weight:500;color:${isSelected?'var(--accent)':'var(--text)'};min-width:54px;">#${b.number}</span>
+      <span style="font-size:9px;padding:1px 5px;border-radius:3px;background:${isSuccess?'var(--green-bg)':'var(--red-bg)'};color:${isSuccess?'var(--green)':'var(--red)'};border:1px solid ${isSuccess?'var(--green-border)':'var(--red-border)'};font-family:var(--mono);text-transform:uppercase;white-space:nowrap;">${b.result||'?'}</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--text-dim);min-width:24px;">${branch}</span>
+      <span style="font-size:12px;color:var(--text-muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(firstMsg)}</span>
+      <span style="font-size:11px;color:var(--text-dim);font-family:var(--mono);white-space:nowrap;">${formatDate(b.timestamp)}</span>
+    `;
+    row.onmouseenter = () => { if (selectedBuild !== b) row.style.background = 'var(--surface2)'; };
+    row.onmouseleave = () => { row.style.background = selectedBuild === b ? 'var(--new-card-bg)' : 'transparent'; };
+    row.onclick = () => onSelect(b);
+    container.appendChild(row);
+  });
+}
+
+function refreshPickers() {
+  if (!crossMode) {
+    renderPickerInto(baseBuilds, 'picker-base', selectedBase, b => { selectedBase = b; refreshPickers(); updateCompareBtn(); });
+    renderPickerInto(baseBuilds, 'picker-new', selectedNew, b => { selectedNew = b; refreshPickers(); updateCompareBtn(); });
+    document.getElementById('picker-single-wrap').style.display = baseBuilds.length ? 'block' : 'none';
+  } else {
+    renderPickerInto(crossBaseBuilds, 'picker-cross-base', selectedBase, b => { selectedBase = b; refreshPickers(); updateCompareBtn(); });
+    renderPickerInto(crossNewBuilds, 'picker-cross-new', selectedNew, b => { selectedNew = b; refreshPickers(); updateCompareBtn(); });
+  }
+}
+
+function updateCompareBtn() {
+  const btn = document.getElementById('compare-btn');
+  btn.textContent = (selectedBase && selectedNew)
+    ? `Compare #${selectedBase.number} → #${selectedNew.number}`
+    : 'Compare builds';
+}
+
+function loadSide(side) {
+  showErr('');
+  const inputId = side === 'single' ? 'base-json' : side === 'cross-base' ? 'cross-base-json' : 'cross-new-json';
+  const raw = document.getElementById(inputId).value.trim();
+  if (!raw) return;
+  const builds = parseBuilds(raw);
+  if (!builds || builds.length === 0) { showErr('Could not parse JSON — check it is valid Jenkins JSON.'); return; }
+  if (side === 'single') {
+    baseBuilds = builds;
+    const successes = builds.filter(b => b.result === 'SUCCESS').sort((a,b) => b.number - a.number);
+    selectedNew = successes[0] || builds[0];
+    selectedBase = successes[1] || successes[0] || builds[0];
+  } else if (side === 'cross-base') {
+    crossBaseBuilds = builds;
+    selectedBase = builds.filter(b => b.result === 'SUCCESS').sort((a,b) => b.number - a.number)[0] || builds[0];
+  } else {
+    crossNewBuilds = builds;
+    selectedNew = builds.filter(b => b.result === 'SUCCESS').sort((a,b) => b.number - a.number)[0] || builds[0];
+  }
+  refreshPickers();
+  updateCompareBtn();
+}
+
 function runDiff() {
   showErr('');
-  const baseRaw = document.getElementById('base-json').value.trim();
-  const newRaw = document.getElementById('new-json').value.trim();
-  if (!baseRaw || !newRaw) { showErr('Paste JSON into both fields.'); return; }
-  const base = parseBuild(baseRaw);
-  const newer = parseBuild(newRaw);
-  if (!base) { showErr('Could not parse base build JSON — check it is valid Jenkins JSON.'); return; }
-  if (!newer) { showErr('Could not parse new build JSON — check it is valid Jenkins JSON.'); return; }
 
+  // If no builds loaded yet, try parsing now
+  if (!selectedBase || !selectedNew) {
+    const raw = document.getElementById('base-json').value.trim();
+    if (!raw) { showErr('Paste JSON and pick builds first.'); return; }
+    loadSide('single');
+    if (!selectedBase || !selectedNew) { showErr('Could not parse JSON.'); return; }
+  }
+
+  const base = selectedBase, newer = selectedNew;
   const baseArt = getArtifactSlugs(base);
   const newArt = getArtifactSlugs(newer);
   const baseCommits = getCommits(base);
@@ -653,8 +784,7 @@ function runDiff() {
   const newBranch = extractBranch(newer);
   const baseUrl = `https://jenkins-tools.afero-inc.sdm.network/job/fw-mono/job/${baseBranch}/${base.number}/`;
   const newUrl = `https://jenkins-tools.afero-inc.sdm.network/job/fw-mono/job/${newBranch}/${newer.number}/`;
-
-  const extIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+  const extIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
 
   document.getElementById('build-headers').innerHTML = `
     <div class="build-card">
@@ -667,7 +797,7 @@ function runDiff() {
       <div class="build-meta">${formatDate(base.timestamp)}<br>${baseCommits.length} commit(s)</div>
     </div>
     <div class="build-card is-new">
-      <div style="font-size:11px;font-family:var(--mono);color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em;">New build <span class="badge badge-new" style="margin-left:6px;">latest</span></div>
+      <div style="font-size:11px;font-family:var(--mono);color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em;">New build <span class="badge badge-new" style="margin-left:6px;">selected</span></div>
       <a class="build-num" href="${newUrl}" target="_blank">#${newer.number} ${extIcon}</a>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <span class="badge ${newer.result==='SUCCESS'?'badge-success':'badge-fail'}">${newer.result||'UNKNOWN'}</span>
@@ -679,12 +809,12 @@ function runDiff() {
   document.getElementById('new-count').textContent = `${trulyNew.length} new commit${trulyNew.length !== 1 ? 's' : ''}`;
   document.getElementById('new-commits').innerHTML = trulyNew.length
     ? trulyNew.map(c => commitHTML(c, true)).join('')
-    : `<p class="empty">No new commits vs the base build — may be a rebuild or the same commit range.</p>`;
+    : `<p class="empty">No new commits vs the base build — may be a rebuild or same commit range.</p>`;
 
   document.getElementById('base-col-head').textContent = `#${base.number}`;
   document.getElementById('new-col-head').textContent = `#${newer.number}`;
 
-  const allSlugs = [...new Set([...KNOWN_ARTIFACTS, ...baseArt, ...newArt])];
+  const allSlugs = [...new Set([...baseArt, ...newArt])].sort();
   document.getElementById('artifact-body').innerHTML = allSlugs.map(slug => {
     const inBase = baseArt.has(slug);
     const inNew = newArt.has(slug);
@@ -692,7 +822,7 @@ function runDiff() {
     const baseTd = inBase ? `<span class="art-present">✓</span>` : `<span class="art-none">—</span>`;
     const newTd = inNew
       ? (inBase ? `<span class="art-present">✓</span>` : `<span class="art-present">✓</span><span class="art-new-badge">NEW</span>`)
-      : (inBase ? `<span class="art-missing">✕ missing</span>` : `<span class="art-none">—</span>`);
+      : `<span class="art-missing">✕ missing</span>`;
     return `<tr class="${rowClass}"><td class="artifact-name">${esc(slug)}</td><td>${baseTd}</td><td>${newTd}</td></tr>`;
   }).join('');
 
@@ -706,32 +836,71 @@ function runDiff() {
 }
 
 function clearAll() {
-  document.getElementById('base-json').value = '';
-  document.getElementById('new-json').value = '';
+  ['base-json','cross-base-json','cross-new-json'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
   document.getElementById('output').style.display = 'none';
+  document.getElementById('picker-single-wrap').style.display = 'none';
+  ['picker-base','picker-new','picker-cross-base','picker-cross-new'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.innerHTML = '';
+  });
+  baseBuilds = []; newBuilds = []; crossBaseBuilds = []; crossNewBuilds = [];
+  selectedBase = null; selectedNew = null;
+  document.getElementById('compare-btn').textContent = 'Compare builds';
   showErr('');
 }
 
 function loadDemo() {
-  const make = (num, ts, commits, artifacts) => JSON.stringify({
-    number: num, result: 'SUCCESS', timestamp: ts,
-    fullDisplayName: `fw-mono » 2.7 #${num}`,
-    artifacts: artifacts.map(a => ({fileName:`${a}-build${num}.zip`,displayPath:a})),
-    changeSets: [{items: commits.map(c => ({msg:c.msg, commitId:c.id, author:{fullName:c.author}}))}]
-  }, null, 2);
+  clearAll();
+  const makeJob = (branch, builds) => JSON.stringify({ fullName: `fw-mono/${branch}`, builds }, null, 2);
+  const makeBuild = (num, branch, ts, msgLines, artifacts) => ({
+    number: num, result: 'SUCCESS', timestamp: ts, fullName: `fw-mono/${branch}`,
+    artifacts: artifacts.map(a => ({fileName:`${a}-build${num}.zip`})),
+    actions:[{environment:{MORE:`fw-mono/${branch} - #${num}
+Changes since last Success:
+${msgLines.map(m=>' - '+m.id+' '+m.author+': '+m.msg).join('
+')}`}}]
+  });
 
-  document.getElementById('base-json').value = make(1041, Date.now()-86400000*3,
-    [{msg:'DEV-1120 fix BLE provisioning retry',id:'abc1',author:'maria-afero'},
-     {msg:'chore: bump dependencies',id:'abc2',author:'tom-afero'}],
-    ['apps-esp32','bootloader-esp32','scripts','fw-tools-details']);
+  const job27 = makeJob('2.7', [
+    makeBuild(1044, '2.7', Date.now()-3600000,
+      [{msg:'DEV-1155 add realtek 8762 OTA support',id:'xyz1',author:'james-afero'},
+       {msg:'DEV-1158 thermostat schedule fix',id:'xyz2',author:'maria-afero'},
+       {msg:'DEV-1120 fix BLE provisioning retry',id:'abc1',author:'maria-afero'}],
+      ['apps-esp32','apps-realtek-8762','bootloader-esp32','factoryapp-esp32','scripts','fw-tools-details']),
+    makeBuild(1041, '2.7', Date.now()-86400000*3,
+      [{msg:'DEV-1120 fix BLE provisioning retry',id:'abc1',author:'maria-afero'},
+       {msg:'chore: bump dependencies',id:'abc2',author:'tom-afero'}],
+      ['apps-esp32','bootloader-esp32','scripts','fw-tools-details']),
+    {...makeBuild(1040, '2.7', Date.now()-86400000*4,[{msg:'chore: ci tweak',id:'aaa',author:'bot'}],[]), result:'FAILURE'}
+  ]);
 
-  document.getElementById('new-json').value = make(1044, Date.now()-3600000,
-    [{msg:'DEV-1120 fix BLE provisioning retry',id:'abc1',author:'maria-afero'},
-     {msg:'chore: bump dependencies',id:'abc2',author:'tom-afero'},
-     {msg:'DEV-1155 add realtek 8762 OTA support',id:'xyz1',author:'james-afero'},
-     {msg:'DEV-1158 thermostat schedule fix',id:'xyz2',author:'maria-afero'}],
-    ['apps-esp32','apps-realtek-8762','bootloader-esp32','factoryapp-esp32','scripts','fw-tools-details']);
+  document.getElementById('base-json').value = job27;
+  loadSide('single');
 }
-</script>
+
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('fw-theme', t); } catch(e) {}
+  document.querySelectorAll('[id^="btn-"]').forEach(b => b.style.opacity = '0.4');
+  const active = document.getElementById('btn-' + t);
+  if (active) active.style.opacity = '1';
+}
+(function() {
+  let saved = 'dark';
+  try { saved = localStorage.getItem('fw-theme') || 'dark'; } catch(e) {}
+  setTheme(saved);
+})();
+
+// Auto-trigger picker when user pastes
+document.getElementById('base-json').addEventListener('input', () => {
+  if (document.getElementById('base-json').value.trim().length > 100) loadSide('single');
+});
+document.getElementById('cross-base-json') && document.getElementById('cross-base-json').addEventListener('input', () => {
+  if (document.getElementById('cross-base-json').value.trim().length > 100) loadSide('cross-base');
+});
+document.getElementById('cross-new-json') && document.getElementById('cross-new-json').addEventListener('input', () => {
+  if (document.getElementById('cross-new-json').value.trim().length > 100) loadSide('cross-new');
+});
 </body>
 </html>
