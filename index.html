@@ -462,6 +462,8 @@
     .paste-grid, .build-cards { grid-template-columns: 1fr; }
   }
 </style>
+
+
 <script>
 function setTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
@@ -475,8 +477,6 @@ function setTheme(t) {
   try { saved = localStorage.getItem('fw-theme') || 'dark'; } catch(e) {}
   document.documentElement.setAttribute('data-theme', saved);
 })();
-</script>
-<script defer>
 
 // State
 let baseBuilds = [], newBuilds = [], crossBaseBuilds = [], crossNewBuilds = [];
@@ -783,7 +783,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const cnj = document.getElementById('cross-new-json');
   if (cnj) cnj.addEventListener('input', () => { if (cnj.value.trim().length > 100) loadSide('cross-new'); });
 });
-
 </script>
 </head>
 <body>
@@ -903,7 +902,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </main>
 
 <footer style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px;">
-  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v1.5</span>
+  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v1.6</span>
 </footer>
 
 
