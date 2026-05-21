@@ -494,6 +494,11 @@ function toggleCross() {
   updateCompareBtn();
 }
 
+function toggleCommits(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
 function showErr(msg) {
   const b = document.getElementById('error-box');
   b.textContent = msg;
@@ -697,7 +702,12 @@ function runDiff() {
         <span class="badge ${base.result==='SUCCESS'?'badge-success':'badge-fail'}">${base.result||'UNKNOWN'}</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">branch ${baseBranch}</span>
       </div>
-      <div class="build-meta">${formatDate(base.timestamp)}<br>${baseCommits.length} commit(s)</div>
+      <div class="build-meta">${formatDate(base.timestamp)}<br>
+        <span onclick="toggleCommits('base-commits-detail')" style="cursor:pointer;text-decoration:underline;text-underline-offset:2px;">${baseCommits.length} commit(s)</span>
+        <div id="base-commits-detail" style="display:none;margin-top:8px;font-size:11px;line-height:1.8;">
+          ${baseCommits.map(c => `<div style="color:var(--text-muted);">${esc(c.msg||'')}</div>`).join('')}
+        </div>
+      </div>
     </div>
     <div class="build-card is-new">
       <div style="font-size:11px;font-family:var(--mono);color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em;">New build <span class="badge badge-new" style="margin-left:6px;">selected</span></div>
@@ -706,7 +716,12 @@ function runDiff() {
         <span class="badge ${newer.result==='SUCCESS'?'badge-success':'badge-fail'}">${newer.result||'UNKNOWN'}</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">branch ${newBranch}</span>
       </div>
-      <div class="build-meta">${formatDate(newer.timestamp)}<br>${newCommits.length} commit(s) · <strong>${trulyNew.length} new</strong></div>
+      <div class="build-meta">${formatDate(newer.timestamp)}<br>
+        <span onclick="toggleCommits('new-commits-detail')" style="cursor:pointer;text-decoration:underline;text-underline-offset:2px;">${newCommits.length} commit(s) · <strong>${trulyNew.length} new</strong></span>
+        <div id="new-commits-detail" style="display:none;margin-top:8px;font-size:11px;line-height:1.8;">
+          ${newCommits.map(c => `<div style="color:${trulyNew.includes(c)?'var(--green)':'var(--text-muted)'};">${esc(c.msg||'')}</div>`).join('')}
+        </div>
+      </div>
     </div>`;
 
   document.getElementById('new-count').textContent = `${trulyNew.length} new commit${trulyNew.length !== 1 ? 's' : ''}`;
@@ -781,12 +796,17 @@ function loadDemo() {
 
 // Auto-trigger picker when user pastes
 document.addEventListener('DOMContentLoaded', () => {
-  const bj = document.getElementById('base-json');
-  if (bj) bj.addEventListener('input', () => { if (bj.value.trim().length > 100) loadSide('single'); });
-  const cbj = document.getElementById('cross-base-json');
-  if (cbj) cbj.addEventListener('input', () => { if (cbj.value.trim().length > 100) loadSide('cross-base'); });
-  const cnj = document.getElementById('cross-new-json');
-  if (cnj) cnj.addEventListener('input', () => { if (cnj.value.trim().length > 100) loadSide('cross-new'); });
+  function bindTextarea(id, side) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const handler = () => setTimeout(() => { if (el.value.trim().length > 100) loadSide(side); }, 50);
+    el.addEventListener('input', handler);
+    el.addEventListener('paste', handler);
+    el.addEventListener('change', handler);
+  }
+  bindTextarea('base-json', 'single');
+  bindTextarea('cross-base-json', 'cross-base');
+  bindTextarea('cross-new-json', 'cross-new');
 });
 </script>
 </head>
@@ -907,7 +927,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </main>
 
 <footer style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px;">
-  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v1.7</span>
+  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v1.9</span>
 </footer>
 
 
