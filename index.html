@@ -598,7 +598,7 @@ function toggleCross() {
   document.getElementById('single-mode').style.display = crossMode ? 'none' : 'block';
   document.getElementById('cross-toggle').textContent = crossMode
     ? '- Back to single branch mode'
-    : '+ Compare across branches (2.6 vs 2.7)';
+    : '+ Compare across branches (2.3 – 2.7)';
   selectedBase = null; selectedNew = null;
   updateCompareBtn();
 }
@@ -990,12 +990,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <a href="https://jenkins-tools.afero-inc.sdm.network/job/fw-mono/job/2.7/api/json?depth=2&pretty=true" target="_blank" style="display:inline-block;padding:4px 12px;border-radius:20px;border:1px solid var(--border-accent);color:var(--accent);font-family:var(--mono);font-size:12px;text-decoration:none;font-weight:500;">2.7</a>
         </div>
       </li>
-      <li>
-        <div style="background:var(--amber-bg);border:1px solid var(--amber);border-radius:6px;padding:8px 12px;margin:4px 0;color:var(--amber);font-weight:600;font-size:13px;">
-          ⚠️ Wait for the page to fully load before copying — you'll see a full page of JSON when it's ready. Copying too early will cause a parse error.
-        </div>
+      <li>When the page is fully loaded, select all (Cmd+A), copy, paste below — then pick your base and new builds from the list
+        <br><span style="color:var(--amber);font-size:12px;font-weight:500;">⚠️ Wait for the full JSON to load before copying — it may take 15–30 seconds</span>
       </li>
-      <li>Select all (Cmd+A), copy, paste below — then pick your base and new builds from the list</li>
     </ol>
   </div>
 
@@ -1022,7 +1019,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 
   <div style="margin-bottom:16px;">
-    <button onclick="toggleCross()" id="cross-toggle" style="font-size:12px;padding:5px 14px;color:var(--text-muted);border-color:var(--border);">+ Compare across branches (2.6 vs 2.7)</button>
+    <button onclick="toggleCross()" id="cross-toggle" style="font-size:12px;padding:6px 16px;color:var(--accent);border:1px solid var(--accent);border-radius:20px;background:var(--accent-dim);cursor:pointer;font-weight:500;">+ Compare across branches (2.3 – 2.7)</button>
   </div>
 
   <div id="cross-mode" style="display:none;margin-bottom:16px;">
@@ -1080,7 +1077,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </main>
 
 <footer style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px;">
-  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v2.9</span>
+  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v3.1</span>
 </footer>
 
 
