@@ -610,7 +610,7 @@ function renderPickerInto(builds, containerId, selectedBuild, onSelect) {
   if (!container) return;
   container.innerHTML = '';
   container.style.cssText = 'border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;max-height:220px;overflow-y:auto;';
-  builds.slice(0, 20).forEach(b => {
+  builds.slice(0, 200).forEach(b => {
     const branch = extractBranch(b);
     const commits = getCommits(b);
     const firstMsg = commits.length ? commits[0].msg.slice(0, 50) + (commits[0].msg.length > 50 ? '…' : '') : '—';
@@ -931,7 +931,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </main>
 
 <footer style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px;">
-  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v2.0</span>
+  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v2.1</span>
 </footer>
 
 
