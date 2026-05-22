@@ -593,12 +593,14 @@ function commitHTML(item, isNew) {
   const hash = (item.commitId || item.id || '').slice(0, 8);
   const tickets = devTickets(msg);
   const ticketsHTML = tickets.map(t => `<a class="dev-ticket" href="https://kibanlabs.atlassian.net/browse/${t}" target="_blank">${t}</a>`).join('');
+  const dateStr = item._buildTs ? formatDate(item._buildTs) : '';
   return `<div class="commit${isNew ? ' is-new' : ''}">
     ${ticketsHTML ? `<div class="commit-tickets">${ticketsHTML}</div>` : ''}
     <div class="commit-msg">${esc(msg)}</div>
     <div class="commit-meta">
       ${hash ? `<span class="commit-hash">${hash}</span>` : ''}
       ${author ? `<span class="commit-author">${esc(author)}</span>` : ''}
+      ${dateStr ? `<span class="commit-author" style="margin-left:auto;">${dateStr}</span>` : ''}
     </div>
   </div>`;
 }
@@ -703,7 +705,7 @@ function runDiff() {
       const key = c.commitId || c.id || c.msg;
       if (!seenHashes.has(key)) {
         seenHashes.add(key);
-        newCommits.push(c);
+        newCommits.push({...c, _buildTs: b.timestamp, _buildNum: b.number});
       }
     }
   }
@@ -951,7 +953,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </main>
 
 <footer style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px;">
-  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v2.2</span>
+  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v2.3</span>
 </footer>
 
 
