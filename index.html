@@ -482,6 +482,8 @@ function setTheme(t) {
 let baseBuilds = [], newBuilds = [], crossBaseBuilds = [], crossNewBuilds = [];
 let selectedBase = null, selectedNew = null;
 let crossMode = false;
+let commitSortDesc = true; // true = newest first
+let trulyNewCache = [];
 
 function toggleCross() {
   crossMode = !crossMode;
@@ -496,6 +498,19 @@ function toggleCross() {
 
 function linkifyMsg(msg) {
   return esc(msg).replace(/DEV-(\d+)/g, '<a href="https://kibanlabs.atlassian.net/browse/DEV-$1" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">DEV-$1</a>');
+}
+
+function renderCommits() {
+  const sorted = commitSortDesc ? [...trulyNewCache].reverse() : [...trulyNewCache];
+  document.getElementById('new-commits').innerHTML = sorted.length
+    ? sorted.map(c => commitHTML(c, true)).join('')
+    : '<p class="empty">No new commits vs the base build.</p>';
+  document.getElementById('sort-btn').textContent = commitSortDesc ? 'Newest first ↓' : 'Oldest first ↑';
+}
+
+function toggleSort() {
+  commitSortDesc = !commitSortDesc;
+  renderCommits();
 }
 
 function toggleCommits(id) {
@@ -750,10 +765,10 @@ function runDiff() {
       </div>
     </div>`;
 
+  trulyNewCache = trulyNew;
+  commitSortDesc = true;
   document.getElementById('new-count').textContent = `${trulyNew.length} new commit${trulyNew.length !== 1 ? 's' : ''}`;
-  document.getElementById('new-commits').innerHTML = trulyNew.length
-    ? trulyNew.map(c => commitHTML(c, true)).join('')
-    : `<p class="empty">No new commits vs the base build — may be a rebuild or same commit range.</p>`;
+  renderCommits();
 
   document.getElementById('base-col-head').textContent = `#${base.number}`;
   document.getElementById('new-col-head').textContent = `#${newer.number}`;
@@ -920,6 +935,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="section-head">
         <h2>What's new for QA to test</h2>
         <span class="count-pill green" id="new-count">0 new commits</span>
+        <button id="sort-btn" onclick="toggleSort()" style="margin-left:auto;font-size:11px;padding:3px 10px;color:var(--text-muted);border-color:var(--border);">Newest first ↓</button>
       </div>
       <div class="section-body" id="new-commits"></div>
     </div>
@@ -953,7 +969,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </main>
 
 <footer style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px;">
-  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v2.3</span>
+  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v2.4</span>
 </footer>
 
 
