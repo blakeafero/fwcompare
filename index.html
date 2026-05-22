@@ -598,7 +598,7 @@ function toggleCross() {
   document.getElementById('single-mode').style.display = crossMode ? 'none' : 'block';
   document.getElementById('cross-toggle').textContent = crossMode
     ? '- Back to single branch mode'
-    : '+ Compare across branches (2.3 – 2.7)';
+    : '+ Compare across branches (2.6 vs 2.7)';
   selectedBase = null; selectedNew = null;
   updateCompareBtn();
 }
@@ -982,9 +982,6 @@ document.addEventListener('DOMContentLoaded', () => {
       <li>Click the branch link below — the page may take <strong>15–30 seconds</strong> to fully load</li>
       <li style="list-style:none;margin-left:-1.2em;">
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px;">
-          <a href="https://jenkins-tools.afero-inc.sdm.network/job/fw-mono/job/2.3/api/json?depth=2&pretty=true" target="_blank" style="display:inline-block;padding:4px 12px;border-radius:20px;border:1px solid var(--border-accent);color:var(--accent);font-family:var(--mono);font-size:12px;text-decoration:none;font-weight:500;">2.3</a>
-          <a href="https://jenkins-tools.afero-inc.sdm.network/job/fw-mono/job/2.4/api/json?depth=2&pretty=true" target="_blank" style="display:inline-block;padding:4px 12px;border-radius:20px;border:1px solid var(--border-accent);color:var(--accent);font-family:var(--mono);font-size:12px;text-decoration:none;font-weight:500;">2.4</a>
-          <a href="https://jenkins-tools.afero-inc.sdm.network/job/fw-mono/job/2.5/api/json?depth=2&pretty=true" target="_blank" style="display:inline-block;padding:4px 12px;border-radius:20px;border:1px solid var(--border-accent);color:var(--accent);font-family:var(--mono);font-size:12px;text-decoration:none;font-weight:500;">2.5</a>
           <a href="https://jenkins-tools.afero-inc.sdm.network/job/fw-mono/job/2.6/api/json?depth=2&pretty=true" target="_blank" style="display:inline-block;padding:4px 12px;border-radius:20px;border:1px solid var(--border-accent);color:var(--accent);font-family:var(--mono);font-size:12px;text-decoration:none;font-weight:500;">2.6</a>
           <a href="https://jenkins-tools.afero-inc.sdm.network/job/fw-mono/job/2.7/api/json?depth=2&pretty=true" target="_blank" style="display:inline-block;padding:4px 12px;border-radius:20px;border:1px solid var(--border-accent);color:var(--accent);font-family:var(--mono);font-size:12px;text-decoration:none;font-weight:500;">2.7</a>
         </div>
@@ -1018,7 +1015,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 
   <div style="margin-bottom:16px;">
-    <button onclick="toggleCross()" id="cross-toggle" style="font-size:12px;padding:6px 16px;color:var(--accent);border:1px solid var(--accent);border-radius:20px;background:var(--accent-dim);cursor:pointer;font-weight:500;">+ Compare across branches (2.3 – 2.7)</button>
+    <button onclick="toggleCross()" id="cross-toggle" style="font-size:12px;padding:6px 16px;color:var(--accent);border:1px solid var(--accent);border-radius:20px;background:var(--accent-dim);cursor:pointer;font-weight:500;">+ Compare across branches (2.6 vs 2.7)</button>
   </div>
 
   <div id="cross-mode" style="display:none;margin-bottom:16px;">
@@ -1076,7 +1073,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </main>
 
 <footer style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px;">
-  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v3.2</span>
+  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v3.3</span>
 </footer>
 
 
