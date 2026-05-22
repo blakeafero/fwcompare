@@ -688,7 +688,27 @@ function runDiff() {
   const baseArt = getArtifactSlugs(base);
   const newArt = getArtifactSlugs(newer);
   const baseCommits = getCommits(base);
-  const newCommits = getCommits(newer);
+
+  // Collect ALL commits from every build between base and new (exclusive of base, inclusive of new)
+  const allBuilds = crossMode ? crossNewBuilds : baseBuilds;
+  const buildsInRange = allBuilds
+    .filter(b => b.number > base.number && b.number <= newer.number)
+    .sort((a, b) => a.number - b.number);
+
+  // Gather all commits across the range, deduped by hash
+  const seenHashes = new Set();
+  const newCommits = [];
+  for (const b of buildsInRange) {
+    for (const c of getCommits(b)) {
+      const key = c.commitId || c.id || c.msg;
+      if (!seenHashes.has(key)) {
+        seenHashes.add(key);
+        newCommits.push(c);
+      }
+    }
+  }
+
+  // What's truly new = commits not in the base build
   const baseHashes = new Set(baseCommits.map(c => c.commitId || c.id || c.msg));
   const trulyNew = newCommits.filter(c => !baseHashes.has(c.commitId || c.id || c.msg));
 
@@ -931,7 +951,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </main>
 
 <footer style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px;">
-  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v2.1</span>
+  fw-mono build diff &nbsp;·&nbsp; <span id="ver">v2.2</span>
 </footer>
 
 
